@@ -41,11 +41,27 @@ public:
 	void deserialize();
 
 	void print() const;
-	
 
 private:
+
 	int getColumnIndex(const MyString& colName) const;
+	bool isContainingColumn(const MyString& colName) const;
 	void initTableFile(std::ostream& os);
+
+	bool isCondtionMet(const MyString& cellValue, const MyString& conditionValue,
+		const MyString& comparisonOperator) const;
+
+	const Vector<Pair<int, int>>& searchForValueByColumnAndPredicate(const MyString& columnName,
+		const MyString& conditionValue, const MyString& comparisonOperator) const;
+
+public:
+
+	void updateColumns(const Vector<MyString> columns, Vector<Vector<MyString>> values);
+
+	void renameColumn(const MyString oldName, const MyString newName);
 	
+	void setAllColumnsTo(const MyString column, const MyString value);
+
+	void printAtColumn(const MyString column) const;
 };
 

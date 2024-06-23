@@ -20,5 +20,6 @@ public:
 
 private:
 	bool isContainingTable(Table& ref) const;
+
 };
 

@@ -22,28 +22,49 @@ int main()
     Table t(tableName);
     t.deserialize();
 
+    
+
     t.print();
 
-    Database base("BasePath");
+    std::cout << std::endl;
+
+    /*Database base("BasePath");
     base.addTable(t);
-    base.addTable(t);
+    base.addTable(t);*/
 
-   // MyString colName1 = "field1";
-   // MyString colName2 = "field2";
-   // MyString colName3 = "field3";
-   // MyString colName4 = "field4";
-   // Vector<MyString> colsNames;
-   // colsNames.pushBack(colName1);
-   // colsNames.pushBack(colName2);
+    MyString colName1 = "field1";
+    MyString colName2 = "field2";
+    MyString colName3 = "field3";
+    MyString colName4 = "field4";
+    Vector<MyString> colsNames;
+    colsNames.pushBack(colName1);
+    colsNames.pushBack(colName2);
 
+    Vector<MyString> columns;
+    columns.pushBack(colName3);
+    columns.pushBack(colName4);
 
-   // MyString colType1 = "int";
-   // MyString colType2 = "real";
-   // MyString colType3 = "text";
-   // MyString colType4 = "text";
-   // Vector<MyString> colsTypes;
-   // colsTypes.pushBack(colType1);
-   // colsTypes.pushBack(colType2);
+    
+
+    MyString colType1 = "int";
+    MyString colType2 = "real";
+    MyString colType3 = "text";
+    MyString colType4 = "text";
+    Vector<MyString> colsTypes1;
+    colsTypes1.pushBack(colType1);
+    colsTypes1.pushBack(colType2);
+
+    Vector<MyString> colsTypes2;
+    colsTypes2.pushBack(colType1);
+    //colsTypes.pushBack(colType2);
+
+    Vector<Vector<MyString>> values;
+    values.pushBack(colsTypes1);
+    values.pushBack(colsTypes2);
+
+    t.updateColumns(columns, values);
+
+    t.print();
 
    // 
    // Table table(tableName, 2, colsNames, colsTypes);

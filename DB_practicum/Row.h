@@ -1,5 +1,6 @@
 #pragma once
 #include "MyString.h"
+#include "Pair.hpp"
 #include "Vector.hpp"
 #include "Constants.h"
 #include <fstream>

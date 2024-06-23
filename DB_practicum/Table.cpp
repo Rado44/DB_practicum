@@ -205,6 +205,92 @@ void Table::initTableFile(std::ostream& os)
 	os << std::endl;
 }
 
+bool Table::isCondtionMet(const MyString& cellValue, 
+	const MyString& conditionValue, const MyString& comparisonOperator) const
+{
+	if (comparisonOperator == "==") {
+		return cellValue == conditionValue;
+	}
+	else if (comparisonOperator == "!=") {
+		return cellValue != conditionValue;
+	}
+	else if (comparisonOperator == ">") {
+		return cellValue > conditionValue;
+	}
+	else if (comparisonOperator == "<") {
+		return cellValue < conditionValue;
+	}
+	else if (comparisonOperator == ">=") {
+		return cellValue >= conditionValue;
+	}
+	else if (comparisonOperator == "<=") {
+		return cellValue <= conditionValue;
+	}
+}
+
+const Vector<Pair<int, int>>& Table::searchForValueByColumnAndPredicate(const MyString& columnName, 
+	const MyString& conditionValue, const MyString& comparisonOperator) const
+{
+	Vector<Pair<int, int>> indicesPairs;
+
+	int columnIndex = getColumnIndex(columnName);
+	for (size_t i = 0; i < rowsCount; i++)
+	{
+		if (isCondtionMet(rows[i].getValueByColumnIndex(columnIndex), conditionValue, comparisonOperator)) {
+			Pair<int, int> indicesPair(i, columnIndex);
+			indicesPairs.pushBack(indicesPair);
+		}
+	}
+
+	return indicesPairs;
+}
+
+void Table::updateColumns(const Vector<MyString> columns, Vector<Vector<MyString>> values)
+{
+	for (size_t i = 0; i < columns.getSize(); i++)
+	{
+		if (isContainingColumn(columns[i]))
+		{
+			for (size_t j = 0; j < values[i].getSize(); j++)
+			{
+				rows[j].setValue(i, values[i][j]);
+			}
+		}
+	}
+}
+
+void Table::renameColumn(const MyString oldName, const MyString newName)
+{
+	if (isContainingColumn(oldName))
+	{
+		columnNames[getColumnIndex(oldName)] = newName;
+	}
+}
+
+void Table::setAllColumnsTo(const MyString column, const MyString value)
+{
+	if (isContainingColumn(column))
+	{
+		size_t columnIndex = getColumnIndex(column);
+		for (size_t i = 0; i < rowsCount; i++)
+		{
+			rows[i].setValue(columnIndex, value);
+		}
+	}
+}
+
+void Table::printAtColumn(const MyString column) const
+{
+	if (isContainingColumn(column))
+	{
+		size_t columnIndex = getColumnIndex(column);
+		for (size_t i = 0; i < rowsCount; i++)
+		{
+			std::cout<<rows[i].getColumns()[columnIndex]<<std::endl;
+		}
+	}
+}
+
 int Table::getColumnIndex(const MyString& colName) const
 {
 	if (colsCount < 1) {
@@ -216,4 +302,17 @@ int Table::getColumnIndex(const MyString& colName) const
 		if (strcmp(columnNames[i].c_str(), colName.c_str()) == 0)
 			return i;
 	}
+}
+
+bool Table::isContainingColumn(const MyString& colName) const
+{
+	if (colsCount < 1) {
+		throw std::logic_error("No such column");
+	}
+	for (int i = 0; i < colsCount; i++)
+	{
+		if (strcmp(columnNames[i].c_str(), colName.c_str()) == 0)
+			return true;
+	}
+	return false;
 }
