@@ -127,21 +127,25 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="C:\Users\Rady_NOTE\Desktop\New folder\MyString.cpp" />
     <ClCompile Include="Database.cpp" />
     <ClCompile Include="DB_practicum.cpp" />
+    <ClCompile Include="MyString.cpp" />
     <ClCompile Include="Row.cpp" />
+    <ClCompile Include="SQLResponse.cpp" />
     <ClCompile Include="Table.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\Rady_NOTE\Desktop\New folder\MyString.h" />
-    <ClInclude Include="C:\Users\Rady_NOTE\Desktop\New folder\Pair.hpp" />
-    <ClInclude Include="C:\Users\Rady_NOTE\Desktop\New folder\Vector.hpp" />
     <ClInclude Include="ColumnTypesEnum.h" />
     <ClInclude Include="Constants.h" />
     <ClInclude Include="Database.h" />
+    <ClInclude Include="MyString.h" />
+    <ClInclude Include="Pair.hpp" />
     <ClInclude Include="Row.h" />
+    <ClInclude Include="SQLResponse.h" />
     <ClInclude Include="Table.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="Vector.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

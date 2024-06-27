@@ -121,7 +121,6 @@ void Vector<T>::resize(size_t newCapacity) {
 	capacity = newCapacity;
 	T* temp = new T[capacity];
 
-	// Note: the std::vector allocates ONLY MORE than the current capacity
 	if (size > newCapacity) {
 		size = newCapacity;
 	}

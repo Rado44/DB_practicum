@@ -18,9 +18,6 @@
     <ClCompile Include="DB_practicum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="C:\Users\Rady_NOTE\Desktop\New folder\MyString.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Row.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -30,17 +27,17 @@
     <ClCompile Include="Database.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="UI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MyString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLResponse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="C:\Users\Rady_NOTE\Desktop\New folder\Vector.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\Rady_NOTE\Desktop\New folder\MyString.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="C:\Users\Rady_NOTE\Desktop\New folder\Pair.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Row.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -54,6 +51,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Database.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MyString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pair.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SQLResponse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

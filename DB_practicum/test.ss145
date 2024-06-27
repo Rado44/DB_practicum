@@ -1,4 +1,2 @@
-int,real,text,text
-field1,field2,field3,field4
-1,1.0,1,NULL
-1,1.0,NULL,NULL
+int,real
+field1,field2

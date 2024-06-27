@@ -19,14 +19,14 @@ public:
 	Table(const MyString& name, size_t colsCount, const Vector<MyString>& namesOfColumns, const Vector<MyString>& typesOfColumns);
 	Table(const MyString& name);
 
-	/*Vector<Row> getRows() const;
-	Vector<MyString> getColumnNames() const;
-	Vector<MyString> getColumnTypes() const;
-	MyString getName() const;
+	const Vector<Row>& getRows() const;
+	const Vector<MyString>& getColumnNames() const;
+	const Vector<MyString>& getColumnTypes() const;
+	const MyString& getName() const;
 	size_t getColsCount() const;
 	size_t getRowsCount() const;
 
-	void setName(const MyString& name);
+	/*void setName(const MyString& name);
 	void setColsCount(size_t count);
 	void setRowsCount(size_t count);*/
 
@@ -42,9 +42,10 @@ public:
 
 	void print() const;
 
+	int getColumnIndex(const MyString& colName) const;
 private:
 
-	int getColumnIndex(const MyString& colName) const;
+	
 	bool isContainingColumn(const MyString& colName) const;
 	void initTableFile(std::ostream& os);
 

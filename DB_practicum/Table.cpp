@@ -4,21 +4,49 @@
 Table::Table(const MyString& name, size_t colsCount, const Vector<MyString>& columnNames,
 	const Vector<MyString>& columnTypes): name(name), colsCount(colsCount), columnNames(columnNames), columnTypes(columnTypes){}
 
-Table::Table(const MyString& name) :name(name) {};
+Table::Table(const MyString& name) :name(name) {}
+const Vector<Row>& Table::getRows() const
+{
+	return rows;
+}
+const Vector<MyString>& Table::getColumnNames() const
+{
+	return columnNames;
+}
+const Vector<MyString>& Table::getColumnTypes() const
+{
+	return columnTypes;
+}
+const MyString& Table::getName() const
+{
+	return name;
+}
+size_t Table::getColsCount() const
+{
+	return colsCount;
+}
+size_t Table::getRowsCount() const
+{
+	return rowsCount;
+}
 
 void Table::addRow(const Vector<MyString>& colsNamesUser, const Vector<MyString>& cellsValuesUser)
 {
 	size_t colsCountUser = colsNamesUser.getSize();
 	Vector<MyString> row;
+
 	for (size_t i = 0; i < colsCount; i++)
 	{
 		row.pushBack(Constants::NULLID);
 	}
+
 	for (size_t i = 0; i < colsCountUser; i++)
 	{
 		int index = getColumnIndex(colsNamesUser[i]);
 		row.pushAt(cellsValuesUser[index], index);
+		
 	}
+
 	Row newRow(row, colsCount);
 	rows.pushBack(newRow);
 	rowsCount++;
@@ -146,6 +174,11 @@ void Table::deserialize()
 
 void Table::print() const
 {
+	if (rowsCount == 0)
+	{
+		std::cout << "Empty set" << std::endl;
+		return;
+	}
 	for (size_t i = 0; i < colsCount; i++)
 	{
 		std::cout << columnTypes[i] << ' ';
@@ -299,8 +332,10 @@ int Table::getColumnIndex(const MyString& colName) const
 
 	for (int i = 0; i < colsCount; i++)
 	{
-		if (strcmp(columnNames[i].c_str(), colName.c_str()) == 0)
+		if (!strcmp(columnNames[i].c_str(), colName.c_str()))
+		{
 			return i;
+		}
 	}
 }
 
