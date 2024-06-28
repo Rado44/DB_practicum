@@ -20,6 +20,8 @@ public:
 
 	const Vector<Table> getTables() const;
 
+	const MyString getPath() const;
+
 	void addTable(Table& ref);
 
 private:

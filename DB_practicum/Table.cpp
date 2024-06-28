@@ -2,7 +2,10 @@
 #pragma warning(disable:4996)
 
 Table::Table(const MyString& name, size_t colsCount, const Vector<MyString>& columnNames,
-	const Vector<MyString>& columnTypes): name(name), colsCount(colsCount), columnNames(columnNames), columnTypes(columnTypes){}
+	const Vector<MyString>& columnTypes): name(name), colsCount(colsCount), columnNames(columnNames), columnTypes(columnTypes)
+{
+	setColTypes(columnTypes);
+}
 
 Table::Table(const MyString& name) :name(name) {}
 const Vector<Row>& Table::getRows() const
@@ -43,8 +46,8 @@ void Table::addRow(const Vector<MyString>& colsNamesUser, const Vector<MyString>
 	for (size_t i = 0; i < colsCountUser; i++)
 	{
 		int index = getColumnIndex(colsNamesUser[i]);
+		setColValueType(index, cellsValuesUser[index]);
 		row.pushAt(cellsValuesUser[index], index);
-		
 	}
 
 	Row newRow(row, colsCount);
@@ -179,37 +182,51 @@ void Table::print() const
 		std::cout << "Empty set" << std::endl;
 		return;
 	}
+
+	size_t colLenght = getMaxLenghtColumnText();
+	tableFormating(colLenght);
+
 	for (size_t i = 0; i < colsCount; i++)
 	{
+		std::cout << "|";
+		for (size_t j = 0; j < colLenght + 1 - columnTypes[i].getLength(); j++)
+		{
+			std::cout << ' ';
+		}
+		
+
 		std::cout << columnTypes[i] << ' ';
 
-		if (i != colsCount - 1)
+		if (i == colsCount - 1)
 		{
-			std::cout << Constants::SEP;
-		}
-		else
-		{
-			std::cout << std::endl;
+			std::cout << "|" << std::endl;
 		}
 	}
+
+	tableFormating(colLenght);
 
 	for (size_t i = 0; i < colsCount; i++)
 	{
+		std::cout << "|";
+		for (size_t j = 0; j < colLenght + 1 - columnNames[i].getLength(); j++)
+		{
+			std::cout << ' ';
+		}
+
 		std::cout << columnNames[i] << ' ';
 
-		if (i != colsCount - 1)
+		if (i == colsCount - 1)
 		{
-			std::cout << Constants::SEP;
-		}
-		else
-		{
-			std::cout << std::endl;
+			std::cout << "|" << std::endl;
 		}
 	}
+
+	tableFormating(colLenght);
 
 	for (size_t i = 0; i < rowsCount; i++)
 	{
-		rows[i].print();
+		rows[i].print(colLenght);
+		tableFormating(colLenght);
 	}
 }
 
@@ -292,6 +309,55 @@ void Table::updateColumns(const Vector<MyString> columns, Vector<Vector<MyString
 	}
 }
 
+void Table::setColTypes(const Vector<MyString>& colTypes) const
+{
+	bool result;
+	for (size_t i = 0; i < colTypes.getSize(); i++)
+	{
+			if (colTypes[i] == Constants::INT || colTypes[i] == Constants::REAL || colTypes[i] == Constants::TEXT) {
+				continue;
+			}
+			throw std::exception("Not appropriate column type");
+			break;
+	}
+}
+
+void Table::setColValueType(size_t colIndex, const MyString& value) const
+{
+	MyString colType = columnTypes[colIndex];
+	if (colType == Constants::INT)
+	{
+		if (value[0]=='0') throw std::exception("Invalid value");
+
+
+		for (size_t i = 0; i < value.getLength(); i++)
+		{
+			if (i == 0 && value[0] == '-') continue;
+
+			if (value[i] < '0' || value[i] > '9') throw std::exception("Invalid value");
+		}
+	}
+
+	if (colType == Constants::REAL)
+	{
+		if (value[0] == '0') throw std::exception("Invalid value");
+
+		bool gotToComma = 0;
+		for (size_t i = 0; i < value.getLength(); i++)
+		{
+			if (i == 0 && value[0] == '-') continue;
+			
+			if (value[i] == '.')
+			{
+				gotToComma = true;
+				continue;
+			}
+			if (value[i] < '0' || value[i] > '9') throw std::exception("Invalid value");
+		}
+	}
+
+}
+
 void Table::renameColumn(const MyString oldName, const MyString newName)
 {
 	if (isContainingColumn(oldName))
@@ -337,6 +403,51 @@ int Table::getColumnIndex(const MyString& colName) const
 			return i;
 		}
 	}
+}
+
+size_t Table::getMaxLenghtColumnText() const
+{
+	size_t result = 0;
+
+	for (size_t i = 0; i < columnNames.getSize(); i++)
+	{
+		if (result < columnNames[i].getLength()) {
+			result = columnNames[i].getLength();
+		}
+	}
+
+	for (size_t i = 0; i < columnTypes.getSize(); i++)
+	{
+		if (result < columnTypes[i].getLength()) {
+			result = columnTypes[i].getLength();
+		}
+	}
+
+	for (size_t i = 0; i < rowsCount; i++)
+	{
+		for (size_t j = 0; j < colsCount; j++)
+		{
+			if (result < rows[i].getColumns()[j].getLength())
+			{
+				result = rows[i].getColumns()[j].getLength();
+			}
+		}
+	}
+
+	return result;
+}
+
+void Table::tableFormating(size_t colLenght) const
+{
+	for (size_t i = 0; i < colsCount; i++)
+	{
+		std::cout << '+';
+		for (size_t i = 0; i < colLenght + 2; i++)
+		{
+			std::cout << '-';
+		}
+	}
+	std::cout << '+' << std::endl;
 }
 
 bool Table::isContainingColumn(const MyString& colName) const

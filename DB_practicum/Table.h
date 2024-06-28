@@ -26,10 +26,6 @@ public:
 	size_t getColsCount() const;
 	size_t getRowsCount() const;
 
-	/*void setName(const MyString& name);
-	void setColsCount(size_t count);
-	void setRowsCount(size_t count);*/
-
 	void addRow(const Vector<MyString>& colsNames, const Vector<MyString>& cellsValues);
 	void deleteRow(size_t rowIndex);
 	void updateRowField(size_t rowIndex, size_t colIndex, const MyString& newData);
@@ -45,6 +41,8 @@ public:
 	int getColumnIndex(const MyString& colName) const;
 private:
 
+	size_t getMaxLenghtColumnText() const;
+	void tableFormating(size_t lenght) const;
 	
 	bool isContainingColumn(const MyString& colName) const;
 	void initTableFile(std::ostream& os);
@@ -55,6 +53,11 @@ private:
 	const Vector<Pair<int, int>>& searchForValueByColumnAndPredicate(const MyString& columnName,
 		const MyString& conditionValue, const MyString& comparisonOperator) const;
 
+	//void setName(const MyString& name);
+	//void setColsCount(size_t count);
+	//void setRowsCount(size_t count);
+	void setColTypes(const Vector<MyString>& colTypes) const;
+	void setColValueType(size_t colIndex, const MyString& value) const;
 public:
 
 	void updateColumns(const Vector<MyString> columns, Vector<Vector<MyString>> values);

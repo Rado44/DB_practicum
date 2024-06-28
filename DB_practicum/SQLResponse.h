@@ -3,7 +3,7 @@
 class SQLResponse
 {
 private:
-	MyString message = "";
+	MyString message = " ";
 	size_t rowsAffected = 0;
 	bool isOK = 1;
 

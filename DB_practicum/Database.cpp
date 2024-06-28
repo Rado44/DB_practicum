@@ -18,6 +18,11 @@ const Vector<Table> Database::getTables() const
 	return tables;
 }
 
+const MyString Database::getPath() const
+{
+	return dbPath;
+}
+
 void Database::addTable(Table& ref)
 {
 	if (!isContainingTable(ref))
@@ -176,10 +181,20 @@ SQLResponse& Database::createTable(std::stringstream& ss, MyString& command)
 			colsCount++;
 		}
 
-		Table t2(tableName, colsCount, colNames, colTypes);
-		addTable(t2);
+		bool isOk = 1;
+		try
+		{
+			Table t2(tableName, colsCount, colNames, colTypes);
+			addTable(t2);
+			tables[getTableIndex(tableName)].serialize();
+		}
+		catch (std::exception& e)
+		{
+			std::cout << e.what() << std::endl;
+			isOk = 0;
+		}
 
-		SQLResponse a(0, 1);
+		SQLResponse a(0, isOk);
 		return a;
 	}
 }
@@ -245,6 +260,19 @@ SQLResponse& Database::selectTable(std::stringstream& ss) const
 
 SQLResponse& Database::insertIntoTable(std::stringstream& ss)
 {
+	try {
+		if (tables.getSize() == 0)
+		{
+			throw std::exception("There are no tables");
+		}
+	}
+	catch (std::exception& e)
+	{
+		std::cout << e.what() << std::endl;
+		SQLResponse a;
+		return a;
+	}
+
 	MyString data;
 
 	char ignore;
@@ -285,7 +313,16 @@ SQLResponse& Database::insertIntoTable(std::stringstream& ss)
 		inputVectorInsertion(values, ss);
 		size_t a = getTableIndex(tableName);
 
-		tables[getTableIndex(tableName)].addRow(columnNames, values);
+		try {
+			tables[getTableIndex(tableName)].addRow(columnNames, values);
+		}
+		catch (std::exception& e)
+		{
+			std::cout << e.what() << std::endl;
+			SQLResponse a;
+			return a;
+		}
+		
 		countOfRows++;
 
 		ss >> ignore;
@@ -296,7 +333,7 @@ SQLResponse& Database::insertIntoTable(std::stringstream& ss)
 		}
 	}
 
-
+	tables[getTableIndex(tableName)].serialize();
 	SQLResponse a(countOfRows, 1);
 	return a;
 }
@@ -314,6 +351,8 @@ SQLResponse& Database::alterTableAdd(std::stringstream& ss, const MyString& tabl
 
 	size_t tableIndex = getTableIndex(tableName);
 	tables[tableIndex].addColumnAt(columnName, columnType, tables[tableIndex].getColsCount());
+
+	tables[getTableIndex(tableName)].serialize();
 
 	SQLResponse a(tables[tableIndex].getRowsCount(), 1);
 	return a;
@@ -337,6 +376,8 @@ SQLResponse& Database::alterTableDrop(std::stringstream& ss, const MyString& tab
 
 	size_t tableIndex = getTableIndex(tableName);
 	tables[tableIndex].deleteColumnAt(tables[tableIndex].getColumnIndex(columnName));
+
+	tables[getTableIndex(tableName)].serialize();
 
 	SQLResponse a(tables[tableIndex].getRowsCount(), 1);
 	return a;
@@ -371,6 +412,8 @@ SQLResponse& Database::alterTableRename(std::stringstream& ss, const MyString& t
 	size_t tableIndex = getTableIndex(tableName);
 	tables[tableIndex].renameColumn(columnNameOld, columnNameNew);
 
+	tables[getTableIndex(tableName)].serialize();
+
 	SQLResponse a(0, 1);
 	return a;
 	//alter table test_table rename column field1 to field4
@@ -378,24 +421,36 @@ SQLResponse& Database::alterTableRename(std::stringstream& ss, const MyString& t
 
 SQLResponse& Database::executeQuery(char * query)
 {
+	if (query == nullptr)
+	{
+		std::cout << std::endl;
+
+		SQLResponse a(0, 0);
+		return a;
+	}
+
 	MyString command;
 	std::stringstream ss(query);
 	ss >> command;
 
 	if (command == "create")
 	{
+		std::cout << std::endl;
 		return createTable(ss, command);
 	}
 	else if (command == "show")
 	{
+		std::cout << std::endl;
 		return showTables();
 	}
 	else if (command == "select")
 	{
+		std::cout << std::endl;
 		return selectTable(ss);
 	}
 	else if(command == "insert")
 	{
+		std::cout << std::endl;
 		return insertIntoTable(ss);
 	}
 	else if (command == "alter")
@@ -405,6 +460,7 @@ SQLResponse& Database::executeQuery(char * query)
 
 		if (data != "table")
 		{
+			std::cout << std::endl;
 			SQLResponse a(0, 0);
 			return a;
 		}
@@ -416,24 +472,34 @@ SQLResponse& Database::executeQuery(char * query)
 
 		if (data == "add")
 		{
+			std::cout << std::endl;
+
 			return alterTableAdd(ss, tableName);
 		}
 		else if (data == "drop")
 		{
+			std::cout << std::endl;
+
 			return alterTableDrop(ss, tableName);
 		}
 		else if (data == "rename")
 		{
+			std::cout << std::endl;
+
 			return alterTableRename(ss, tableName);
 		}
 		else
 		{
+			std::cout << std::endl;
+
 			SQLResponse a(0, 0);
 			return a;
 		}
 	}
 	else
 	{
+		std::cout << std::endl;
+
 		SQLResponse a(0, 0);
 		return a;
 	}

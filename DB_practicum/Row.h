@@ -38,5 +38,7 @@ public:
     void deserialize(const char* rowFromFile, size_t colsCount);
 
     void print() const;
+
+    void print(size_t colLenght) const;
 };
 

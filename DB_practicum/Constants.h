@@ -7,6 +7,10 @@ namespace Constants
 	const MyString NULLID = "NULL";
 	const MyString EXTENSION = ".ss145";
 
+	const MyString INT = "int";
+	const MyString REAL = "real";
+	const MyString TEXT = "text";
+
 	const MyString SHOW = "show";
 	const MyString CREATE = "create";
 	const MyString SELECT = "select";

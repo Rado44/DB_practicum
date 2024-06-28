@@ -108,3 +108,22 @@ void Row::print() const
         }
     }
 }
+
+void Row::print(size_t colLenght) const
+{
+    for (size_t i = 0; i < colsCount; i++)
+    {
+        std::cout << "|";
+        for (size_t j = 0; j < colLenght + 1 - columns[i].getLength(); j++)
+        {
+            std::cout << ' ';
+        }
+
+        std::cout << columns[i] << ' ';
+
+        if (i == colsCount - 1)
+        {
+            std::cout << "|" << std::endl;
+        }
+    }
+}
